@@ -28,7 +28,6 @@ while(ready == False):
     else:
       ready = True   
 
-#webbrowser.open('https://accounts.spotify.com/api/token?grant_type="authorization_code"&code='+ SpotifyID +'&redirect_uri=http://example.com/')
 url = "https://accounts.spotify.com/api/token"
 
 payload='grant_type=authorization_code&code=' + SpotifyID + '&redirect_uri=http%3A%2F%2Fexample.com%2F'
@@ -39,10 +38,36 @@ headers = {
 }
 
 response = requests.request("POST", url, headers=headers, data=payload)
-print()
-print()
 accessToken = response.text.split(",")[0].split('"')[3]
-print(accessToken)
+
+#get Device ID
+headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + accessToken,
+}
+
+response = requests.get('https://api.spotify.com/v1/me/player/devices', headers=headers)
+responseJson = response.json()
+responseSplit = str(responseJson['devices']).split("[")[1].split("]")[0].split(",")
+
+ResponseID = responseSplit[0].split(":")[1].split("'")[1]
+ResponseActive = responseSplit[1].split(":")[1]
+ResponsePrivate = responseSplit[2].split(":")[1]
+ResponseRestricted = responseSplit[3].split(":")[1]
+ResponseName = responseSplit[4].split(":")[1].split("'")[1]
+ResponseType = responseSplit[5].split(":")[1].split("'")[1]
+ResponseVolume = responseSplit[6].split(":")[1].split("}")[0]
+print("id " + ResponseID)
+print("active " + ResponseActive)
+print("private " + ResponsePrivate)
+print("restricted " + ResponseRestricted)
+print("name " + ResponseName)
+print("type " + ResponseType)
+print("volume " + ResponseVolume)
+
+time.sleep(50000)
+
 
 #json variables
 with open('settings.json', 'r') as myfile:
