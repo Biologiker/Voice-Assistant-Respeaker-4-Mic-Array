@@ -23,7 +23,6 @@ def backflip():
   return Text
   
 def disconnect_discord(http, json, DiscordToken, gid, uid):
-  print("löschen")
   conn = http.client.HTTPSConnection("discordapp.com")
   payload = json.dumps({
     "channel_id": None
@@ -36,6 +35,8 @@ def disconnect_discord(http, json, DiscordToken, gid, uid):
   res = conn.getresponse()
   data = res.read()
   print(data.decode("utf-8"))
+  n = "Weg mit dir du Wixxa"
+  return n
 
 def spotify_pause(SpotifyToken, SpotifyDeviceID, requests):
   n = ("Ok")

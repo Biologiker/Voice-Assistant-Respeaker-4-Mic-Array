@@ -9,9 +9,15 @@ from gtts import gTTS
 import http.client
 import json
 import requests
-
 import commands
-n = ""
+import webbrowser
+
+ready = False
+
+#webbrowser.open('https://accounts.spotify.com/authorize?client_id=776e6d41373944f4a365b1cff0c40bd9&redirect_uri=http://example.com/&response_type=code&show_dialog=true')
+
+while(ready == False):
+  print("Your Id")
 
 with open('settings.json', 'r') as myfile:
   data = myfile.read()
@@ -37,7 +43,7 @@ if not os.name == "nt":
 
 wakeword = ["raspberry ", "rsp ", "hairspray ", "harrislee ", "restaurant "]
 
-while(True):
+while(ready == True):
   Text = ""
   SpeechText = ""
 
@@ -74,10 +80,10 @@ while(True):
       elif x + "mach einen backflip" in Text:
         SpeechText = commands.backflip()
       elif x + "lösch mich" in Text or x + "flash mich" in Text or x + "fick mich" in Text or x + "rette mich" in Text:
-        commands.disconnect_discord(http, json, DiscordToken, gid, uid)
+        SpeechText = commands.disconnect_discord(http, json, DiscordToken, gid, uid)
       elif x + "pausiere meine musik" in Text:
         SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
-      elif x + "setze meine musik fort" in Text:
+      elif x + "setz musik fort" in Text:
         SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
       elif x + "überspring den track" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
         SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
@@ -99,7 +105,7 @@ while(True):
   try:
     if SpeechText != "":
       if not os.name == "nt":
-        pixel_ring.wakeup()
+        pixel_ring.think()
 
       speak(SpeechText)
 
