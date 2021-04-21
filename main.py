@@ -38,36 +38,26 @@ headers = {
 }
 
 response = requests.request("POST", url, headers=headers, data=payload)
-accessToken = response.text.split(",")[0].split('"')[3]
+SpotifyToken = response.text.split(",")[0].split('"')[3]
 
-#get Device ID
+#get Active Device ID
 headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + accessToken,
+    'Authorization': 'Bearer ' + SpotifyToken,
 }
 
 response = requests.get('https://api.spotify.com/v1/me/player/devices', headers=headers)
 responseJson = response.json()
-responseSplit = str(responseJson['devices']).split("[")[1].split("]")[0].split(",")
+responseSplit = str(responseJson['devices']).split("[")[1].split("]")[0].split("}")
 
-ResponseID = responseSplit[0].split(":")[1].split("'")[1]
-ResponseActive = responseSplit[1].split(":")[1]
-ResponsePrivate = responseSplit[2].split(":")[1]
-ResponseRestricted = responseSplit[3].split(":")[1]
-ResponseName = responseSplit[4].split(":")[1].split("'")[1]
-ResponseType = responseSplit[5].split(":")[1].split("'")[1]
-ResponseVolume = responseSplit[6].split(":")[1].split("}")[0]
-print("id " + ResponseID)
-print("active " + ResponseActive)
-print("private " + ResponsePrivate)
-print("restricted " + ResponseRestricted)
-print("name " + ResponseName)
-print("type " + ResponseType)
-print("volume " + ResponseVolume)
+for x in responseSplit:
+  if len(x) > 10:
+    x = x.split("{")[1] 
+    if "'is_active': True" in x:
+      ActiveDevice = x
 
-time.sleep(50000)
-
+SpotifyDeviceID = ActiveDevice.split(",")[0].split(":")[1].split("'")[1]
 
 #json variables
 with open('settings.json', 'r') as myfile:
@@ -78,8 +68,8 @@ obj = json.loads(data)
 DiscordToken = str(obj['TOKEN'])
 gid = str(obj['gid'])
 uid = str(obj['uid'])
-SpotifyToken = str(obj['SpotifyToken'])
-SpotifyDeviceID = str(obj['SpotifyDeviceID'])
+SpotifyToken2 = str(obj['SpotifyToken'])
+SpotifyDeviceID2 = str(obj['SpotifyDeviceID'])
 
 # allows to run this script on windows
 if not os.name == "nt":
@@ -131,8 +121,8 @@ while(ready == True):
       elif x + "lösch mich" in Text or x + "flash mich" in Text or x + "fick mich" in Text or x + "rette mich" in Text:
         SpeechText = commands.disconnect_discord(http, json, DiscordToken, gid, uid)
       elif x + "pausiere meine musik" in Text:
-        SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
-      elif x + "setz musik fort" in Text:
+        SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, SpotifyToken2, SpotifyDeviceID2, requests)
+      elif x + "setze meine musik fort" in Text or x + "setze musik fort" in Text or x + "setze meine musik vor" in Text or x + "meine musik fort" in Text:
         SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
       elif x + "überspring den track" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
         SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
