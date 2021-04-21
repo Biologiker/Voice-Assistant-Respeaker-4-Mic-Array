@@ -7,6 +7,8 @@ from pydub.playback import play
 import speech_recognition as sr
 from gtts import gTTS
 import http.client
+import http.server
+import http
 import json
 import requests
 import commands
@@ -124,7 +126,7 @@ while(ready == True):
         SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, SpotifyToken2, SpotifyDeviceID2, requests)
       elif x + "setze meine musik fort" in Text or x + "setze musik fort" in Text or x + "setze meine musik vor" in Text or x + "meine musik fort" in Text:
         SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
-      elif x + "überspring den track" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
+      elif x + "überspringe diesen song" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
         SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
       elif x + "fick dich" in Text:
         SpeechText = "Ha hahaha aha ha"
