@@ -6,8 +6,6 @@ from pydub import AudioSegment
 from pydub.playback import play
 import speech_recognition as sr
 from gtts import gTTS
-from pixel_ring import pixel_ring
-from gpiozero import LED
 import http.client
 import json
 import spotipy
@@ -25,7 +23,7 @@ for idx, track in enumerate(results['tracks']['items']):
 
 
 with open('settings.json', 'r') as myfile:
-    data=myfile.read()
+  data=myfile.read()
 
 obj = json.loads(data)
 
@@ -35,9 +33,14 @@ uid = str(obj['uid'])
 
 #spotify_client = SpotifyClient(os.getenv('SPOTIFY_TOKEN'))
 
-power = LED(5)
-power.on()
-pixel_ring.set_brightness(10)
+# allows to run this script on windows
+if not os.name == "nt":
+  from pixel_ring import pixel_ring 
+  from gpiozero import LED
+  
+  power = LED(5)
+  power.on()
+  pixel_ring.set_brightness(10)
 
 wakeword = ["raspberry ", "rsp ", "hairspray ", "harrislee ", "restaurant "]
 
@@ -101,9 +104,13 @@ while(True):
 
   try:
     if SpeechText != "":
-      pixel_ring.wakeup()
+      if not os.name == "nt":
+        pixel_ring.wakeup()
+
       speak(SpeechText)
-      pixel_ring.off()
+
+      if not os.name == "nt":
+        pixel_ring.off()
   except Exception as e:
     print("Error")
 
