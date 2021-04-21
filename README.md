@@ -1,1 +1,1 @@
-# Voice-Assistant-Respeaker-4-Mic-Array-
+# Voice Assistant Respeaker 4 Mic Array
