@@ -12,13 +12,39 @@ import requests
 import commands
 import webbrowser
 
+#Spotify activation
 ready = False
 
-#webbrowser.open('https://accounts.spotify.com/authorize?client_id=776e6d41373944f4a365b1cff0c40bd9&redirect_uri=http://example.com/&response_type=code&show_dialog=true')
+webbrowser.open('https://accounts.spotify.com/authorize?client_id=776e6d41373944f4a365b1cff0c40bd9&redirect_uri=http://example.com/&response_type=code&scope=user-read-private%20user-read-email%20ugc-image-upload%20user-read-recently-played%20user-top-read%20user-read-playback-position%20user-read-playback-state%20user-modify-playback-state%20user-read-currently-playing%20app-remote-control%20streaming%20playlist-modify-public%20playlist-modify-private%20playlist-read-private%20playlist-read-collaborative%20user-follow-modify%20user-follow-read%20user-library-modify%20user-library-read')
+#show_dialog=true&
 
 while(ready == False):
-  print("Your Id")
+  print("Your Redirected Website")
+  InputText = input()
+  if("example.com" in InputText):
+    SpotifyID = InputText.split("=")[1]
+    if(SpotifyID == "access_denied"):
+      print("You must accept!")
+    else:
+      ready = True   
 
+#webbrowser.open('https://accounts.spotify.com/api/token?grant_type="authorization_code"&code='+ SpotifyID +'&redirect_uri=http://example.com/')
+url = "https://accounts.spotify.com/api/token"
+
+payload='grant_type=authorization_code&code=' + SpotifyID + '&redirect_uri=http%3A%2F%2Fexample.com%2F'
+headers = {
+  'Authorization': 'Basic Nzc2ZTZkNDEzNzM5NDRmNGEzNjViMWNmZjBjNDBiZDk6ZDY5N2Q3MjQyN2M1NGE1YmI0YjQ3MDg2MGVkZTdlNWU=',
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'Cookie': '__Host-device_id=AQCges5p4n0S9iC--ZQb9nb6V9mg7nm1fKKrvu1f-5_mEU2mCqZZ5e6EcQVpPgD7wlilkN_C1sJyaUolWd0oBVexlcw59-kY6bI'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+print()
+print()
+accessToken = response.text.split(",")[0].split('"')[3]
+print(accessToken)
+
+#json variables
 with open('settings.json', 'r') as myfile:
   data = myfile.read()
 
@@ -29,8 +55,6 @@ gid = str(obj['gid'])
 uid = str(obj['uid'])
 SpotifyToken = str(obj['SpotifyToken'])
 SpotifyDeviceID = str(obj['SpotifyDeviceID'])
-
-# spotify_client = SpotifyClient(os.getenv('SPOTIFY_TOKEN'))
 
 # allows to run this script on windows
 if not os.name == "nt":
