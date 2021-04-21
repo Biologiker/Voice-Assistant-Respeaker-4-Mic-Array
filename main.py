@@ -62,6 +62,8 @@ while(True):
         SpeechText = "Ich mag dich nicht"
       elif "danke" in Text:
         SpeechText = "Bitte"
+      elif "ich bin so gut" in Text:
+        SpeechText = "G U H T"
       elif x + "uhrzeit" in Text or x + "wie viel uhr ist es gerade" in Text or x + "wie spät ist es" in Text:
         SpeechText = "Es ist " + \
           time.strftime('%H:%M:%S', time.localtime())
@@ -87,7 +89,21 @@ while(True):
         res = conn.getresponse()
         data = res.read()
         print(data.decode("utf-8"))
-      elif x + "pausier meine musik" in Text:
+      elif x + "pausiere meine musik" in Text:
+        SpeechText = ("Ok")
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      	  'Authorization': SpotifyToken,
+        }
+
+        params = (
+          ('device_id', SpotifyDeviceID),
+        )
+
+        response = requests.put('https://api.spotify.com/v1/me/player/pause', headers=headers, params=params)
+      elif x + "setze meine musik fort" in Text:
+        SpeechText = ("Ok")
         headers = {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -98,9 +114,11 @@ while(True):
           ('device_id', SpotifyDeviceID),
         )
 
-        response = requests.put(
-          'https://api.spotify.com/v1/me/player/pause', headers=headers, params=params)
+        data = '{"context_uri":"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr","offset":{"position":5},"position_ms":0}'
+
+        response = requests.put('https://api.spotify.com/v1/me/player/play', headers=headers, params=params, data=data)
       elif x + "überspring den track" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text:
+        SpeechText = ("Ok")
         headers = {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
