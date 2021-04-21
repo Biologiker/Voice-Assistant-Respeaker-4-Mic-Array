@@ -14,6 +14,7 @@ import http.client
 import json
 
 #spotify_client = SpotifyClient(os.getenv('SPOTIFY_TOKEN'))
+# lol
 
 power = LED(5)
 power.on()
@@ -26,9 +27,8 @@ while(True):
     Text = ""
     SpeechText = ""
 
-
     def speak(text):
-        tts = gTTS(text = text, lang="de")
+        tts = gTTS(text=text, lang="de")
         filename = "voice.mp3"
         tts.save(filename)
 
@@ -40,20 +40,21 @@ while(True):
         print()
         print("Say something!")
         audio = r.listen(source)
-        
 
     try:
-        Text = r.recognize_google(audio,language='de-DE')
+        Text = r.recognize_google(audio, language='de-DE')
         Text = Text.lower()
         print(Text)
 
         for x in wakeword:
             if x + "was geht" in Text:
                 SpeechText = "Ich mag dich nicht"
-            elif x +"uhrzeit" in Text or x + "wie viel uhr ist es gerade" in Text or x + "wie spät ist es" in Text:
-                SpeechText = "Es ist " + time.strftime('%H:%M:%S', time.localtime())
+            elif x + "uhrzeit" in Text or x + "wie viel uhr ist es gerade" in Text or x + "wie spät ist es" in Text:
+                SpeechText = "Es ist " + \
+                    time.strftime('%H:%M:%S', time.localtime())
             elif x + "datum" in Text:
-                SpeechText = "Heute ist der " + time.strftime('%Y-%m-%d', time.localtime())
+                SpeechText = "Heute ist der " + \
+                    time.strftime('%Y-%m-%d', time.localtime())
             elif x + "mach einen backflip" in Text:
                 SpeechText = "Wuuu Backflip"
             elif x + "verpissdich" in Text:
@@ -69,13 +70,13 @@ while(True):
                         'Authorization': 'mfa.4VcfC3QC9SJ1ihXjCMH7sqf4qFspq9nDm3uq2U1MkVxaIgOfHY5eh16Y50OaC5ufzCeYFufpHjpEeK3gRFtK',
                         'Content-Type': 'application/json',
                     }
-                    conn.request("PATCH", "/api/v6/guilds/" + y +"/members/454315560503738400", payload, headers)
+                    conn.request("PATCH", "/api/v6/guilds/" + y +
+                                 "/members/454315560503738400", payload, headers)
                     res = conn.getresponse()
                     data = res.read()
                     print(data.decode("utf-8"))
             else:
                 pass
-        
 
     except sr.UnknownValueError:
         print("Ich konnte dich nicht verstehen!")
