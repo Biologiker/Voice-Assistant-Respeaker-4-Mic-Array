@@ -10,6 +10,9 @@ import http.client
 import json
 import requests
 
+import commands
+n = ""
+
 with open('settings.json', 'r') as myfile:
   data = myfile.read()
 
@@ -59,77 +62,32 @@ while(True):
 
     for x in wakeword:
       if x + "was geht" in Text:
-        SpeechText = "Ich mag dich nicht"
+        SpeechText = commands.was_geht()
       elif "danke" in Text:
-        SpeechText = "Bitte"
+        SpeechText = commands.danke()
       elif "ich bin so gut" in Text:
-        SpeechText = "G U H T"
+        SpeechText = commands.gut()
       elif x + "uhrzeit" in Text or x + "wie viel uhr ist es gerade" in Text or x + "wie spät ist es" in Text:
-        SpeechText = "Es ist " + \
-          time.strftime('%H:%M:%S', time.localtime())
+        SpeechText = commands.uhrzeit(time)
       elif x + "datum" in Text:
-        SpeechText = "Heute ist der " + \
-          time.strftime('%Y-%m-%d', time.localtime())
+        SpeechText = commands.datum(time)
       elif x + "mach einen backflip" in Text:
-        SpeechText = "Wuuu Backflip"
-      elif x + "verpissdich" in Text:
-        exit()
-      elif x + "lösch mich" in Text or x + "flash mich" in Text:
-        print("löschen")
-        conn = http.client.HTTPSConnection("discordapp.com")
-        payload = json.dumps({
-          "channel_id": None
-        })
-        headers = {
-          'Authorization': DiscordToken,
-          'Content-Type': 'application/json',
-        }
-        conn.request("PATCH", "/api/v6/guilds/" + gid +
-                     "/members/" + uid, payload, headers)
-        res = conn.getresponse()
-        data = res.read()
-        print(data.decode("utf-8"))
+        SpeechText = commands.backflip()
+      elif x + "lösch mich" in Text or x + "flash mich" in Text or x + "fick mich" in Text or x + "rette mich" in Text:
+        commands.disconnect_discord(http, json, DiscordToken, gid, uid)
       elif x + "pausiere meine musik" in Text:
-        SpeechText = ("Ok")
-        headers = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      	  'Authorization': SpotifyToken,
-        }
-
-        params = (
-          ('device_id', SpotifyDeviceID),
-        )
-
-        response = requests.put('https://api.spotify.com/v1/me/player/pause', headers=headers, params=params)
+        SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
       elif x + "setze meine musik fort" in Text:
-        SpeechText = ("Ok")
-        headers = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': SpotifyToken,
-        }
-
-        params = (
-          ('device_id', SpotifyDeviceID),
-        )
-
-        data = '{"context_uri":"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr","offset":{"position":5},"position_ms":0}'
-
-        response = requests.put('https://api.spotify.com/v1/me/player/play', headers=headers, params=params, data=data)
-      elif x + "überspring den track" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text:
-        SpeechText = ("Ok")
-        headers = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': SpotifyToken,
-        }
-
-        params = (
-          ('device_id', SpotifyDeviceID),
-        )
-
-        response = requests.post('https://api.spotify.com/v1/me/player/next', headers=headers, params=params)
+        SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
+      elif x + "überspring den track" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
+        SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
+      elif x + "fick dich" in Text:
+        SpeechText = "Ha hahaha aha ha"
+      elif x + "verpissdich" in Text:
+        speak("O O O O O O O O O")
+        exit()
+      elif x in Text:
+        SpeechText = commands.error()
       else:
         pass
 
