@@ -2,8 +2,6 @@ import os
 import struct
 import sys
 import time
-import datetime
-from threading import Thread
 from pydub import AudioSegment
 from pydub.playback import play
 import speech_recognition as sr
@@ -23,7 +21,6 @@ gid = str(obj['gid'])
 uid = str(obj['uid'])
 
 #spotify_client = SpotifyClient(os.getenv('SPOTIFY_TOKEN'))
-# lol
 
 power = LED(5)
 power.on()
