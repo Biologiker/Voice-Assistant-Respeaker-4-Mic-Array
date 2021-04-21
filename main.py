@@ -10,6 +10,19 @@ from pixel_ring import pixel_ring
 from gpiozero import LED
 import http.client
 import json
+import spotipy
+
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="776e6d41373944f4a365b1cff0c40bd9",
+                                                           client_secret="d697d72427c54a5bb4b470860ede7e5e"))
+
+results = sp.search(q='weezer', limit=20)
+for idx, track in enumerate(results['tracks']['items']):
+    print(idx, track['name'])
+
+
 
 with open('settings.json', 'r') as myfile:
     data=myfile.read()
