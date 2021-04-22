@@ -42,7 +42,7 @@ if not os.name == "nt":
   power.on()
   pixel_ring.set_brightness(10)
 
-wakeword = ["raspberry ", "rsp ", "hairspray ", "harrislee ", "restaurant "]
+wakeword = ["raspberry ", "rsp ", "hairspray ", "harrislee ", "restaurant ", "raspberry pi "]
 
 while(ready == True):
   Text = ""
@@ -82,26 +82,29 @@ while(ready == True):
         SpeechText = commands.backflip()
       elif x + "lösch mich" in Text or x + "flash mich" in Text or x + "fick mich" in Text or x + "rette mich" in Text:
         SpeechText = commands.disconnect_discord(http, json, DiscordToken, gid, uid)
-      elif x + "pausiere meine musik" in Text:
+      elif x + "pausiere meine musik" in Text or x + "spotify pause" in Text:
         try:
           SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
         except:
+          print("Spotify Error")
           spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
           SpotifyToken = spotifyResult[0]
           SpotifyDeviceID = spotifyResult[1]
           ready = spotifyResult[2]
-      elif x + "setze meine musik fort" in Text or x + "setze musik fort" in Text or x + "setze meine musik vor" in Text or x + "meine musik fort" in Text:
+      elif x + "setze meine musik fort" in Text or x + "setze musik fort" in Text or x + "setze meine musik vor" in Text or x + "meine musik fort" in Text or x + "spotify play" in Text:
         try:
           SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
         except:
+          print("Spotify Error")
           spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
           SpotifyToken = spotifyResult[0]
           SpotifyDeviceID = spotifyResult[1]
           ready = spotifyResult[2]
-      elif x + "überspringe diesen song" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
+      elif x + "spotify skip" in Text or x + "überspringe diesen song" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
         try:
           SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
         except:
+          print("Spotify Error")
           spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
           SpotifyToken = spotifyResult[0]
           SpotifyDeviceID = spotifyResult[1]
