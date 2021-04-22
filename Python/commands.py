@@ -39,6 +39,70 @@ def disconnect_discord(http, json, DiscordToken, gid, uid):
   n = "Weg mit dir du Wixxa"
   return n
 
+def stumm_discord(http, json, DiscordToken, gid, uid):
+  conn = http.client.HTTPSConnection("discordapp.com")
+  payload = json.dumps({
+    "deaf": True
+  })
+  headers = {
+    'Authorization': DiscordToken,
+    'Content-Type': 'application/json',
+  }
+  conn.request("PATCH", "/api/v6/guilds/" + gid + "/members/" + uid, payload, headers)
+  res = conn.getresponse()
+  data = res.read()
+  print(data.decode("utf-8"))
+  n = "Endlich Ruhe"
+  return n
+
+def unstumm_discord(http, json, DiscordToken, gid, uid):
+  conn = http.client.HTTPSConnection("discordapp.com")
+  payload = json.dumps({
+    "deaf": False
+  })
+  headers = {
+    'Authorization': DiscordToken,
+    'Content-Type': 'application/json',
+  }
+  conn.request("PATCH", "/api/v6/guilds/" + gid + "/members/" + uid, payload, headers)
+  res = conn.getresponse()
+  data = res.read()
+  print(data.decode("utf-8"))
+  n = "Och ne das sind die Idioten wieder"
+  return n
+
+def mute_discord(http, json, DiscordToken, gid, uid):
+  conn = http.client.HTTPSConnection("discordapp.com")
+  payload = json.dumps({
+    "mute": True
+  })
+  headers = {
+    'Authorization': DiscordToken,
+    'Content-Type': 'application/json',
+  }
+  conn.request("PATCH", "/api/v6/guilds/" + gid + "/members/" + uid, payload, headers)
+  res = conn.getresponse()
+  data = res.read()
+  print(data.decode("utf-8"))
+  n = "Mikro aus"
+  return n
+
+def unmute_discord(http, json, DiscordToken, gid, uid):
+  conn = http.client.HTTPSConnection("discordapp.com")
+  payload = json.dumps({
+    "mute": False
+  })
+  headers = {
+    'Authorization': DiscordToken,
+    'Content-Type': 'application/json',
+  }
+  conn.request("PATCH", "/api/v6/guilds/" + gid + "/members/" + uid, payload, headers)
+  res = conn.getresponse()
+  data = res.read()
+  print(data.decode("utf-8"))
+  n = "Mikro an"
+  return n
+
 def spotify_pause(SpotifyToken, SpotifyDeviceID, requests):
   n = ("Ok")
   headers = {

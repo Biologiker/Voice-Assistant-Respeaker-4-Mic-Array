@@ -114,6 +114,14 @@ while(ready == True):
       elif x + "verpissdich" in Text:
         speak("O O O O O O O O O")
         exit()
+      elif x + "discord ton aus" in Text:
+        SpeechText = commands.stumm_discord(http, json, DiscordToken, gid, uid)
+      elif x + "discord ton an" in Text:
+        SpeechText = commands.unstumm_discord(http, json, DiscordToken, gid, uid)
+      elif x + "discord mikro aus" in Text:
+        SpeechText = commands.mute_discord(http, json, DiscordToken, gid, uid)
+      elif x + "discord mikro an" in Text:
+        SpeechText = commands.unmute_discord(http, json, DiscordToken, gid, uid)
       elif x in Text:
         SpeechText = commands.error()
       else:
