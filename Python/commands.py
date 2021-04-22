@@ -38,7 +38,7 @@ def disconnect_discord(http, json, DiscordToken, gid, uid):
   n = "Weg mit dir du Wixxa"
   return n
 
-def spotify_pause(SpotifyToken, SpotifyDeviceID, SpotifyToken2, SpotifyDeviceID2, requests):
+def spotify_pause(SpotifyToken, SpotifyDeviceID, requests):
   n = ("Ok")
   headers = {
     'Accept': 'application/json',
@@ -51,12 +51,6 @@ def spotify_pause(SpotifyToken, SpotifyDeviceID, SpotifyToken2, SpotifyDeviceID2
   )
 
   requests.put('https://api.spotify.com/v1/me/player/pause', headers=headers, params=params)
-  print(SpotifyDeviceID)
-  print(SpotifyToken)
-  print("")
-  print("")
-  print(SpotifyDeviceID2)
-  print(SpotifyToken2)
   return n
 
 def spotify_play(SpotifyToken, SpotifyDeviceID, requests):

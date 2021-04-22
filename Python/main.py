@@ -27,6 +27,7 @@ while(ready == False):
     SpotifyID = InputText.split("=")[1]
     if(SpotifyID == "access_denied"):
       print("You must accept!")
+      webbrowser.open('https://accounts.spotify.com/authorize?client_id=776e6d41373944f4a365b1cff0c40bd9&redirect_uri=http://example.com/&response_type=code&scope=user-read-private%20user-read-email%20ugc-image-upload%20user-read-recently-played%20user-top-read%20user-read-playback-position%20user-read-playback-state%20user-modify-playback-state%20user-read-currently-playing%20app-remote-control%20streaming%20playlist-modify-public%20playlist-modify-private%20playlist-read-private%20playlist-read-collaborative%20user-follow-modify%20user-follow-read%20user-library-modify%20user-library-read')
     else:
       ready = True   
 
@@ -70,8 +71,6 @@ obj = json.loads(data)
 DiscordToken = str(obj['TOKEN'])
 gid = str(obj['gid'])
 uid = str(obj['uid'])
-SpotifyToken2 = str(obj['SpotifyToken'])
-SpotifyDeviceID2 = str(obj['SpotifyDeviceID'])
 
 # allows to run this script on windows
 if not os.name == "nt":
@@ -98,8 +97,8 @@ while(ready == True):
 
   r = sr.Recognizer()
   with sr.Microphone() as source:
-    print()
     print("Say something!")
+    print()
     audio = r.listen(source)
 
   try:
@@ -123,7 +122,7 @@ while(ready == True):
       elif x + "lösch mich" in Text or x + "flash mich" in Text or x + "fick mich" in Text or x + "rette mich" in Text:
         SpeechText = commands.disconnect_discord(http, json, DiscordToken, gid, uid)
       elif x + "pausiere meine musik" in Text:
-        SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, SpotifyToken2, SpotifyDeviceID2, requests)
+        SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
       elif x + "setze meine musik fort" in Text or x + "setze musik fort" in Text or x + "setze meine musik vor" in Text or x + "meine musik fort" in Text:
         SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
       elif x + "überspringe diesen song" in Text or x + "überspringe den track" in Text or x + "überspringen track" in Text or x + "überspring den dreck" in Text or x + "überspringe den dreck" in Text or x + "überspringen dreck" in Text:
