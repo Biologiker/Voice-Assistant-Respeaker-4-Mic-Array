@@ -70,11 +70,16 @@ def data(webbrowser, ready, requests, json):
   responseJson = response.json()
   responseSplit = str(responseJson['devices']).split("[")[1].split("]")[0].split("}")
 
-  for x in responseSplit:
-    if len(x) > 10:
-      x = x.split("{")[1] 
-      if "'is_active': True" in x:
-        ActiveDevice = x
+  try:
+    for x in responseSplit:
+      if len(x) > 10:
+        x = x.split("{")[1] 
+        if "'is_active': True" in x:
+          ActiveDevice = x
+        else:
+          ActiveDevice = responseSplit[0]
+  except:
+    pass
 
   SpotifyDeviceID = ActiveDevice.split(",")[0].split(":")[1].split("'")[1]
   ready = True
