@@ -1,5 +1,6 @@
 def was_geht():
   Text = "Ich mag dich nicht"
+  print("Hey")
   return Text
 
 def danke():

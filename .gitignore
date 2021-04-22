@@ -7,3 +7,4 @@ pixel_ring
 help.txt
 Backup
 __pycache__
+refreshToken.json
