@@ -26,16 +26,6 @@ SpotifyToken = spotifyResult[0]
 SpotifyDeviceID = spotifyResult[1]
 ready = spotifyResult[2]
 
-#json variables
-with open('settings.json', 'r') as myfile:
-  data = myfile.read()
-
-obj = json.loads(data)
-
-DiscordToken = str(obj['TOKEN'])
-gid = str(obj['gid'])
-uid = str(obj['uid'])
-
 # allows to run this script on windows
 if not os.name == "nt":
   from pixel_ring import pixel_ring
@@ -106,8 +96,6 @@ try:
           SpeechText = commands.datum(time)
         elif "mach einen backflip" in Text:
           SpeechText = commands.backflip()
-        elif "lösch mich" in Text or "flash mich" in Text or "fick mich" in Text or "rette mich" in Text:
-          SpeechText = commands.disconnect_discord(http, json, DiscordToken, gid, uid)
         elif "pausiere meine musik" in Text or  "spotify pause" in Text:
           try:
             SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
@@ -140,14 +128,6 @@ try:
         elif "verpissdich" in Text:
           speak("O O O O O O O O O")
           exit()
-        elif "discord ton aus" in Text:
-          SpeechText = commands.stumm_discord(http, json, DiscordToken, gid, uid)
-        elif "discord ton an" in Text:
-          SpeechText = commands.unstumm_discord(http, json, DiscordToken, gid, uid)
-        elif "discord mikro aus" in Text:
-          SpeechText = commands.mute_discord(http, json, DiscordToken, gid, uid)
-        elif "discord mikro an" in Text:
-          SpeechText = commands.unmute_discord(http, json, DiscordToken, gid, uid)
         else:
           SpeechText = commands.error()
 
