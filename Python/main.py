@@ -104,10 +104,7 @@ try:
             ready = spotifyResult[2]
             DeviceList = spotifyResult[3]
         elif  "setze meine musik fort" in Text or  "setze musik fort" in Text or  "setze meine musik vor" in Text or  "meine musik fort" in Text or "spotify play" in Text:
-          try:
             SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
-          except:
-            print("Spotify Error")
             spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
             SpotifyToken = spotifyResult[0]
             SpotifyDeviceID = spotifyResult[1]
