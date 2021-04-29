@@ -83,4 +83,4 @@ def data(webbrowser, ready, requests, json):
 
   SpotifyDeviceID = ActiveDevice.split(",")[0].split(":")[1].split("'")[1]
   ready = True
-  return SpotifyToken, SpotifyDeviceID, ready
+  return SpotifyToken, SpotifyDeviceID, ready, ""
