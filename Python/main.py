@@ -14,16 +14,25 @@ import requests
 import commands
 import spotifyCode
 import webbrowser
-import struct
-import pyaudio
-import pvporcupine
+"""
+from __future__ import print_function
+import datetime
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+"""
 
 ready = False
 Wakeword = False
+TimerSpotifyDevices = 0
 
 #Spotify activation
 
-spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
+spotifyResult = spotifyCode.data(webbrowser, ready, requests, json, time)
 SpotifyToken = spotifyResult[0]
 SpotifyDeviceID = spotifyResult[1]
 ready = spotifyResult[2]
@@ -52,8 +61,8 @@ def recognition():
   recognitionText = ""
   r = sr.Recognizer()
   with sr.Microphone() as source:
-    print("Say something!")
     print()
+    print("Say something!")
     audio = r.listen(source)
       
   try:
@@ -70,7 +79,7 @@ try:
     Text = recognition()
     SpeechText = ""
 
-    if "raspberry" in Text:
+    if "raspberry" in Text or "restaurant" in Text:
       if not os.name == "nt":
         pixel_ring.wakeup()
       Wakeword = True
@@ -90,36 +99,34 @@ try:
       elif "mach einen backflip" in Text:
         SpeechText = commands.backflip()
       elif "pausiere meine musik" in Text or  "spotify pause" in Text:
-        try:
-          SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
-        except:
-          print("Spotify Error")
-          spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
-          SpotifyToken = spotifyResult[0]
-          SpotifyDeviceID = spotifyResult[1]
-          ready = spotifyResult[2]
-          DeviceList = spotifyResult[3]
+        spotifyResult = spotifyCode.data(webbrowser, ready, requests, json, time)
+        SpotifyToken = spotifyResult[0]
+        SpotifyDeviceID = spotifyResult[1]
+        ready = spotifyResult[2]
+        DeviceList = spotifyResult[3]
+        SpeechText = commands.spotify_pause(SpotifyToken, SpotifyDeviceID, requests)
       elif  "setze meine musik fort" in Text or  "setze musik fort" in Text or  "setze meine musik vor" in Text or  "meine musik fort" in Text or "spotify play" in Text:
-        try:
-          SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
-        except:
-          spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
-          SpotifyToken = spotifyResult[0]
-          SpotifyDeviceID = spotifyResult[1]
-          ready = spotifyResult[2]
-          DeviceList = spotifyResult[3]
+        spotifyResult = spotifyCode.data(webbrowser, ready, requests, json, time)
+        SpotifyToken = spotifyResult[0]
+        SpotifyDeviceID = spotifyResult[1]
+        ready = spotifyResult[2]
+        DeviceList = spotifyResult[3]
+        SpeechText = commands.spotify_play(SpotifyToken, SpotifyDeviceID, requests)
       elif "spotify skip" in Text or "überspringe diesen song" in Text or "überspringe den track" in Text or "überspringen track" in Text or "überspring den dreck" in Text or "überspringe den dreck" in Text or "überspringen dreck" in Text:
-        try:
-          SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
-        except:
-          print("Spotify Error")
-          spotifyResult = spotifyCode.data(webbrowser, ready, requests, json)
-          SpotifyToken = spotifyResult[0]
-          SpotifyDeviceID = spotifyResult[1]
-          ready = spotifyResult[2]
-          DeviceList = spotifyResult[3]
-      elif "zeig mir meine verfügbaren Geräte auf Spotify" in Text or "spotify geräte" in Text:
-        SpeechText = commands.spotify_devices(SpotifyToken, SpotifyDeviceID, requests, DeviceList, json)
+        spotifyResult = spotifyCode.data(webbrowser, ready, requests, json, time)
+        SpotifyToken = spotifyResult[0]
+        SpotifyDeviceID = spotifyResult[1]
+        ready = spotifyResult[2]
+        DeviceList = spotifyResult[3]
+        SpeechText = commands.spotify_skip(SpotifyToken, SpotifyDeviceID, requests)
+      elif "zeig meine verfügbaren geräte" in Text or "zeig mir meine verfügbaren geräte" in Text or "spotify geräte" in Text:
+        spotifyResult = spotifyCode.data(webbrowser, ready, requests, json, time)
+        SpotifyToken = spotifyResult[0]
+        SpotifyDeviceID = spotifyResult[1]
+        ready = spotifyResult[2]
+        DeviceList = spotifyResult[3]
+        SpeechText = commands.spotify_devices(DeviceList, json, TimerSpotifyDevices)
+        
       elif "fick dich" in Text:
         SpeechText = "Ha hahaha aha ha"
       elif "verpissdich" in Text:
@@ -128,6 +135,7 @@ try:
       else:
         #SpeechText = commands.error()
         print("Ich konnte dich nicht verstehen!")
+        SpeechText = "lol"
 
       Text = ""
 
@@ -136,8 +144,6 @@ try:
           pixel_ring.think()
         if SpeechText != "":
           speak(SpeechText)
-          
-
         if not os.name == "nt":
           pixel_ring.off()
       except Exception as e:

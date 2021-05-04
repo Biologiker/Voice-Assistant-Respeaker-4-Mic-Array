@@ -50,8 +50,7 @@ def spotify_play(SpotifyToken, SpotifyDeviceID, requests):
     ('device_id', SpotifyDeviceID),
   )
 
-  data = '{"context_uri":"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr","offset":{"position":5},"position_ms":0}'
-  requests.put('https://api.spotify.com/v1/me/player/play', headers=headers, params=params, data=data)
+  requests.put('https://api.spotify.com/v1/me/player/play', headers=headers, params=params)
   return n
 
 def spotify_skip(SpotifyToken, SpotifyDeviceID, requests):
@@ -68,6 +67,23 @@ def spotify_skip(SpotifyToken, SpotifyDeviceID, requests):
 
   requests.post('https://api.spotify.com/v1/me/player/next', headers=headers, params=params)
   return n
+
+def spotify_devices(DeviceList, json, TimerSpotifyDevices):
+  DeviceList.pop()
+  DeviceNamesEinzahl = ["Dein verfügbares Gerät ist:"]
+  DeviceNames = ["Deine verfügbaren Geräte sind"]
+  for x in DeviceList:
+    TimerSpotifyDevices = TimerSpotifyDevices + 1
+    DeviceName = x.split("name")[1].split("'")[2]
+    DeviceNamesEinzahl.append(DeviceName)
+    DeviceNames.append("Gerät Nummer: " + str(TimerSpotifyDevices) + ":" + DeviceName)
+  
+  if(TimerSpotifyDevices > 1):
+    Text = DeviceNames
+  else:
+    Text = DeviceNamesEinzahl
+
+  return str(Text)
 
 def error():
   n = ("Ich habe dich nicht verstanden")
